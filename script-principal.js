@@ -21,7 +21,9 @@ export function setup() {
   const res = http.get(`${BASE_URL}/products?limit=1`, {
     tags: { endpoint: 'health_check' },
   });
-  check(res, { 'health check: API disponible': (r) => r.status === 200 });
+  if (!check(res, { 'health check: API disponible': (r) => r.status === 200 })) {
+    throw new Error('La API no está disponible — abortando test');
+  }
 }
 
 export default function () {
